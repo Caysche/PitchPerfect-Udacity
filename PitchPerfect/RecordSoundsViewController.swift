@@ -26,15 +26,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     // MARK: - Function for enabling/disabling buttons
     
     func isRecording (bool: Bool) {
-        if bool {
-            recordButton.isEnabled = false
-            recordLabel.text = "Recording in Progress"
-            stopRecordingButton.isEnabled = true
-        } else {
-            stopRecordingButton.isEnabled = false
-            recordButton.isEnabled = true
-            recordLabel.text = "Tap to Record"
-        }
+        recordButton.isEnabled = !bool
+        recordLabel.text = bool ? "Recording in Progress" : "Tap to Record"
+        stopRecordingButton.isEnabled = bool
     }
     
     
@@ -72,7 +66,10 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         if flag {
             performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
         } else {
-            print("Recording was not succesful")
+            let alertController = UIAlertController(title: "Error", message: "Recording was not successful", preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "OK", style: .default)
+            alertController.addAction(OKAction)
+            self.present(alertController, animated: true)
         }
         
     }
